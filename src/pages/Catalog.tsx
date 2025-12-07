@@ -6,16 +6,24 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 const Catalog = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [billingPeriods, setBillingPeriods] = useState<{ [key: string]: 'week' | 'month' }>({});
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [selectedDevblog, setSelectedDevblog] = useState<any>(null);
 
   const handleBillingChange = (devblogId: string, period: 'week' | 'month') => {
     setBillingPeriods(prev => ({ ...prev, [devblogId]: period }));
   };
 
   const getBillingPeriod = (devblogId: string) => billingPeriods[devblogId] || 'month';
+
+  const openDetails = (devblog: any) => {
+    setSelectedDevblog(devblog);
+    setIsDetailsOpen(true);
+  };
 
   const devblogs = [
     {
@@ -326,10 +334,10 @@ const Catalog = () => {
                   </Tabs>
 
                   <Button
-                    onClick={() => setSelectedPlan(devblog.id)}
+                    onClick={() => openDetails(devblog)}
                     className={`w-full bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-background font-orbitron font-bold ${colors.glow}`}
                   >
-                    Выбрать тариф
+                    Читать подробнее
                   </Button>
                 </CardContent>
               </Card>
@@ -345,6 +353,74 @@ const Catalog = () => {
           </Button>
         </div>
       </div>
+
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="bg-card border-primary/30 max-w-2xl">
+          {selectedDevblog && (
+            <>
+              <DialogHeader>
+                <div className={`w-16 h-16 ${getColorClasses(selectedDevblog.color).bg} rounded-lg flex items-center justify-center mx-auto mb-4 ${getColorClasses(selectedDevblog.color).glow}`}>
+                  <Icon name={selectedDevblog.icon as any} size={32} className={getColorClasses(selectedDevblog.color).text} />
+                </div>
+                <DialogTitle className={`text-3xl font-orbitron text-center ${getColorClasses(selectedDevblog.color).text}`}>
+                  {selectedDevblog.name}
+                </DialogTitle>
+                <DialogDescription className="text-center text-foreground/60">
+                  {selectedDevblog.date}
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-6 mt-6">
+                <div>
+                  <h3 className="text-xl font-orbitron font-bold text-foreground mb-4">Что входит в обновление:</h3>
+                  <div className="space-y-3">
+                    {selectedDevblog.features.map((feature: string, index: number) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
+                        <Icon name="Check" size={20} className={getColorClasses(selectedDevblog.color).text} />
+                        <span className="text-foreground/80">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t border-primary/20 pt-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        <span className={`text-3xl font-orbitron font-bold ${getColorClasses(selectedDevblog.color).text}`}>
+                          {getBillingPeriod(selectedDevblog.id) === 'week' ? selectedDevblog.pricePerWeek : selectedDevblog.pricePerMonth}
+                        </span>
+                        <span className="text-foreground/60">₽</span>
+                      </div>
+                      <div className="text-sm text-foreground/60 mt-1">
+                        {selectedDevblog.pricePerHour}₽/час
+                      </div>
+                    </div>
+                    <Tabs 
+                      value={getBillingPeriod(selectedDevblog.id)} 
+                      onValueChange={(value) => handleBillingChange(selectedDevblog.id, value as 'week' | 'month')}
+                    >
+                      <TabsList className="bg-muted/50">
+                        <TabsTrigger value="week" className="font-orbitron">Неделя</TabsTrigger>
+                        <TabsTrigger value="month" className="font-orbitron">Месяц</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+                  <Button
+                    onClick={() => {
+                      setSelectedPlan(selectedDevblog.id);
+                      setIsDetailsOpen(false);
+                    }}
+                    className={`w-full bg-gradient-to-r ${getColorClasses(selectedDevblog.color).gradient} hover:opacity-90 text-background font-orbitron font-bold text-lg py-6 ${getColorClasses(selectedDevblog.color).glow}`}
+                  >
+                    Выбрать тариф
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

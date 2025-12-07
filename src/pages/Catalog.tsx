@@ -11,7 +11,7 @@ const Catalog = () => {
 
   const devblogs = [
     {
-      id: 'devblog-1',
+      id: 'devblog-245',
       name: 'DevBlog 245',
       date: 'Декабрь 2024',
       color: 'cyan',
@@ -20,14 +20,12 @@ const Catalog = () => {
         'Новая система крафта',
         'Улучшения боевой системы',
         'Оптимизация производительности',
-        'Новые строительные блоки',
-        'Изменения баланса оружия',
-        'Фиксы багов'
+        'Новые строительные блоки'
       ],
       popular: false
     },
     {
-      id: 'devblog-2',
+      id: 'devblog-244',
       name: 'DevBlog 244',
       date: 'Ноябрь 2024',
       color: 'purple',
@@ -36,15 +34,12 @@ const Catalog = () => {
         'Система транспорта',
         'Новые противники NPC',
         'Улучшенная погода',
-        'Новое электричество',
-        'Система достижений',
-        'Улучшенный UI',
-        'Новые эвенты'
+        'Новое электричество'
       ],
       popular: true
     },
     {
-      id: 'devblog-3',
+      id: 'devblog-243',
       name: 'DevBlog 243',
       date: 'Октябрь 2024',
       color: 'pink',
@@ -53,11 +48,133 @@ const Catalog = () => {
         'Система кланов',
         'Рейдовые механики',
         'Новые биомы',
-        'Система торговли',
-        'Улучшения PvP',
-        'Новые постройки',
-        'Система репутации',
-        'Командные бонусы'
+        'Система торговли'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-242',
+      name: 'DevBlog 242',
+      date: 'Сентябрь 2024',
+      color: 'cyan',
+      icon: 'Shield',
+      features: [
+        'Улучшенная защита базы',
+        'Новые ловушки',
+        'Система турелей',
+        'Укрепления стен'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-241',
+      name: 'DevBlog 241',
+      date: 'Август 2024',
+      color: 'purple',
+      icon: 'Wrench',
+      features: [
+        'Новые инструменты',
+        'Система модификаций',
+        'Улучшение крафта',
+        'Ремонт предметов'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-240',
+      name: 'DevBlog 240',
+      date: 'Июль 2024',
+      color: 'pink',
+      icon: 'Users',
+      features: [
+        'Система команд',
+        'Голосовой чат',
+        'Командные задания',
+        'Общий инвентарь'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-239',
+      name: 'DevBlog 239',
+      date: 'Июнь 2024',
+      color: 'cyan',
+      icon: 'Flame',
+      features: [
+        'Новое оружие',
+        'Система стрельбы',
+        'Баланс урона',
+        'Взрывчатка'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-238',
+      name: 'DevBlog 238',
+      date: 'Май 2024',
+      color: 'purple',
+      icon: 'Map',
+      features: [
+        'Расширение карты',
+        'Новые локации',
+        'Точки интереса',
+        'Система навигации'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-237',
+      name: 'DevBlog 237',
+      date: 'Апрель 2024',
+      color: 'pink',
+      icon: 'Boxes',
+      features: [
+        'Система хранилищ',
+        'Новые контейнеры',
+        'Автосортировка',
+        'Защита лута'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-236',
+      name: 'DevBlog 236',
+      date: 'Март 2024',
+      color: 'cyan',
+      icon: 'Pickaxe',
+      features: [
+        'Добыча ресурсов',
+        'Новые материалы',
+        'Карьеры',
+        'Система переработки'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-235',
+      name: 'DevBlog 235',
+      date: 'Февраль 2024',
+      color: 'purple',
+      icon: 'Home',
+      features: [
+        'Система жилищ',
+        'Декорирование',
+        'Мебель',
+        'Персонализация'
+      ],
+      popular: false
+    },
+    {
+      id: 'devblog-234',
+      name: 'DevBlog 234',
+      date: 'Январь 2024',
+      color: 'pink',
+      icon: 'Skull',
+      features: [
+        'Система смерти',
+        'Потеря предметов',
+        'Возрождение',
+        'Призраки'
       ],
       popular: false
     }

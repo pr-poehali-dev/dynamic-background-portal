@@ -5,9 +5,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Catalog = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [billingPeriods, setBillingPeriods] = useState<{ [key: string]: 'week' | 'month' }>({});
+
+  const handleBillingChange = (devblogId: string, period: 'week' | 'month') => {
+    setBillingPeriods(prev => ({ ...prev, [devblogId]: period }));
+  };
+
+  const getBillingPeriod = (devblogId: string) => billingPeriods[devblogId] || 'month';
 
   const devblogs = [
     {
@@ -16,6 +24,9 @@ const Catalog = () => {
       date: 'Декабрь 2024',
       color: 'cyan',
       icon: 'FileText',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Новая система крафта',
         'Улучшения боевой системы',
@@ -30,6 +41,9 @@ const Catalog = () => {
       date: 'Ноябрь 2024',
       color: 'purple',
       icon: 'Zap',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Система транспорта',
         'Новые противники NPC',
@@ -44,6 +58,9 @@ const Catalog = () => {
       date: 'Октябрь 2024',
       color: 'pink',
       icon: 'Crown',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Система кланов',
         'Рейдовые механики',
@@ -58,6 +75,9 @@ const Catalog = () => {
       date: 'Сентябрь 2024',
       color: 'cyan',
       icon: 'Shield',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Улучшенная защита базы',
         'Новые ловушки',
@@ -72,6 +92,9 @@ const Catalog = () => {
       date: 'Август 2024',
       color: 'purple',
       icon: 'Wrench',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Новые инструменты',
         'Система модификаций',
@@ -86,6 +109,9 @@ const Catalog = () => {
       date: 'Июль 2024',
       color: 'pink',
       icon: 'Users',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Система команд',
         'Голосовой чат',
@@ -100,6 +126,9 @@ const Catalog = () => {
       date: 'Июнь 2024',
       color: 'cyan',
       icon: 'Flame',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Новое оружие',
         'Система стрельбы',
@@ -114,6 +143,9 @@ const Catalog = () => {
       date: 'Май 2024',
       color: 'purple',
       icon: 'Map',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Расширение карты',
         'Новые локации',
@@ -128,6 +160,9 @@ const Catalog = () => {
       date: 'Апрель 2024',
       color: 'pink',
       icon: 'Boxes',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Система хранилищ',
         'Новые контейнеры',
@@ -142,6 +177,9 @@ const Catalog = () => {
       date: 'Март 2024',
       color: 'cyan',
       icon: 'Pickaxe',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Добыча ресурсов',
         'Новые материалы',
@@ -156,6 +194,9 @@ const Catalog = () => {
       date: 'Февраль 2024',
       color: 'purple',
       icon: 'Home',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Система жилищ',
         'Декорирование',
@@ -170,6 +211,9 @@ const Catalog = () => {
       date: 'Январь 2024',
       color: 'pink',
       icon: 'Skull',
+      pricePerHour: 5,
+      pricePerWeek: 750,
+      pricePerMonth: 2500,
       features: [
         'Система смерти',
         'Потеря предметов',
@@ -239,7 +283,7 @@ const Catalog = () => {
                     Популярный
                   </Badge>
                 )}
-                <CardHeader className="text-center pb-8">
+                <CardHeader className="text-center pb-4">
                   <div className={`w-16 h-16 ${colors.bg} rounded-lg flex items-center justify-center mx-auto mb-4 ${colors.glow}`}>
                     <Icon name={devblog.icon as any} size={32} className={colors.text} />
                   </div>
@@ -247,12 +291,45 @@ const Catalog = () => {
                     {devblog.name}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-6">
+                  <div className="text-center space-y-2">
+                    <div className="flex items-baseline justify-center gap-1">
+                      <span className={`text-4xl font-orbitron font-bold ${colors.text}`}>
+                        {getBillingPeriod(devblog.id) === 'week' ? devblog.pricePerWeek : devblog.pricePerMonth}
+                      </span>
+                      <span className="text-foreground/60">₽</span>
+                    </div>
+                    <div className="text-sm text-foreground/60">
+                      {devblog.pricePerHour}₽/час
+                    </div>
+                  </div>
+
+                  <Tabs 
+                    value={getBillingPeriod(devblog.id)} 
+                    onValueChange={(value) => handleBillingChange(devblog.id, value as 'week' | 'month')}
+                    className="w-full"
+                  >
+                    <TabsList className="grid w-full grid-cols-2 bg-muted/50">
+                      <TabsTrigger 
+                        value="week" 
+                        className={`data-[state=active]:bg-gradient-to-r data-[state=active]:${colors.gradient} data-[state=active]:text-background font-orbitron`}
+                      >
+                        Неделя
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="month"
+                        className={`data-[state=active]:bg-gradient-to-r data-[state=active]:${colors.gradient} data-[state=active]:text-background font-orbitron`}
+                      >
+                        Месяц
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+
                   <Button
                     onClick={() => setSelectedPlan(devblog.id)}
                     className={`w-full bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-background font-orbitron font-bold ${colors.glow}`}
                   >
-                    Читать подробнее
+                    Выбрать тариф
                   </Button>
                 </CardContent>
               </Card>

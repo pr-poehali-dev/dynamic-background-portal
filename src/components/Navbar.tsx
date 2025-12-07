@@ -11,12 +11,12 @@ export const Navbar = () => {
   const location = useLocation();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [user, setUser] = useState<{ name: string; balance: number; avatar: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; balance: number; avatar: string; hasHosting: boolean } | null>(null);
 
   const navItems = [
     { name: 'Главная', path: '/', icon: 'Home' },
     { name: 'Каталог', path: '/catalog', icon: 'ShoppingBag' },
-    { name: 'Серверы', path: '/servers', icon: 'Server' },
+    ...(user?.hasHosting ? [{ name: 'Серверы', path: '/servers', icon: 'Server' }] : []),
     { name: 'Документация', path: '/docs', icon: 'Book' },
     { name: 'Поддержка', path: '/support', icon: 'MessageCircle' }
   ];
@@ -26,7 +26,8 @@ export const Navbar = () => {
     setUser({
       name: 'Player',
       balance: 1250,
-      avatar: ''
+      avatar: '',
+      hasHosting: false
     });
     setIsAuthOpen(false);
   };

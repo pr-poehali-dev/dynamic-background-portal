@@ -224,7 +224,11 @@ const Balance = () => {
                     <p className="text-xs text-foreground/40">{transaction.date}</p>
                   </div>
                 ))}
-                <Button variant="outline" className="w-full border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
+                <Button 
+                  onClick={() => alert('Полная история транзакций')}
+                  variant="outline" 
+                  className="w-full border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10"
+                >
                   <Icon name="List" size={18} className="mr-2" />
                   Смотреть все
                 </Button>

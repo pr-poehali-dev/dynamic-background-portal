@@ -215,7 +215,11 @@ const Support = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
+                <Button 
+                  onClick={() => window.location.href = '/docs'}
+                  variant="outline" 
+                  className="w-full border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10"
+                >
                   <Icon name="BookOpen" size={18} className="mr-2" />
                   Открыть базу знаний
                 </Button>

@@ -300,44 +300,17 @@ const Catalog = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="text-center space-y-2">
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className={`text-4xl font-orbitron font-bold ${colors.text}`}>
-                        {getBillingPeriod(devblog.id) === 'week' ? devblog.pricePerWeek : devblog.pricePerMonth}
-                      </span>
-                      <span className="text-foreground/60">₽</span>
-                    </div>
-                    <div className="text-sm text-foreground/60">
-                      {devblog.pricePerHour}₽/час
-                    </div>
+                  <div className="text-center py-4">
+                    <p className="text-lg text-foreground/80 mb-2">Узнайте о всех обновлениях</p>
+                    <p className="text-sm text-foreground/60">Нажмите "Посмотреть тариф" чтобы увидеть цены</p>
                   </div>
-
-                  <Tabs 
-                    value={getBillingPeriod(devblog.id)} 
-                    onValueChange={(value) => handleBillingChange(devblog.id, value as 'week' | 'month')}
-                    className="w-full"
-                  >
-                    <TabsList className="grid w-full grid-cols-2 bg-muted/50">
-                      <TabsTrigger 
-                        value="week" 
-                        className={`data-[state=active]:bg-gradient-to-r data-[state=active]:${colors.gradient} data-[state=active]:text-background font-orbitron`}
-                      >
-                        Неделя
-                      </TabsTrigger>
-                      <TabsTrigger 
-                        value="month"
-                        className={`data-[state=active]:bg-gradient-to-r data-[state=active]:${colors.gradient} data-[state=active]:text-background font-orbitron`}
-                      >
-                        Месяц
-                      </TabsTrigger>
-                    </TabsList>
-                  </Tabs>
 
                   <Button
                     onClick={() => openDetails(devblog)}
                     className={`w-full bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-background font-orbitron font-bold ${colors.glow}`}
                   >
-                    Читать подробнее
+                    <Icon name="Eye" size={20} className="mr-2" />
+                    Посмотреть тариф
                   </Button>
                 </CardContent>
               </Card>
@@ -347,7 +320,11 @@ const Catalog = () => {
 
         <div className="mt-16 text-center animate-fade-in" style={{ animationDelay: '0.8s' }}>
           <p className="text-foreground/60 mb-4">Нужна помощь с выбором?</p>
-          <Button variant="outline" className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
+          <Button 
+            onClick={() => window.location.href = '/support'}
+            variant="outline" 
+            className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10"
+          >
             <Icon name="MessageCircle" size={18} className="mr-2" />
             Связаться с поддержкой
           </Button>

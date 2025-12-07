@@ -52,7 +52,10 @@ const Profile = () => {
                   <p className="text-sm text-foreground/60 mb-1">Баланс</p>
                   <p className="text-3xl font-orbitron font-bold text-neon-purple">{user.balance}₽</p>
                 </div>
-                <Button className="w-full bg-gradient-to-r from-neon-purple to-neon-pink hover:opacity-90 text-background font-orbitron font-semibold glow-purple">
+                <Button 
+                  onClick={() => window.location.href = '/balance'}
+                  className="w-full bg-gradient-to-r from-neon-purple to-neon-pink hover:opacity-90 text-background font-orbitron font-semibold glow-purple"
+                >
                   <Icon name="Wallet" size={18} className="mr-2" />
                   Пополнить баланс
                 </Button>
@@ -85,7 +88,10 @@ const Profile = () => {
                       <Label htmlFor="password">Новый пароль</Label>
                       <Input id="password" type="password" placeholder="••••••••" className="bg-muted border-primary/20" />
                     </div>
-                    <Button className="bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron font-semibold">
+                    <Button 
+                      onClick={() => alert('Настройки сохранены!')}
+                      className="bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron font-semibold"
+                    >
                       <Icon name="Save" size={18} className="mr-2" />
                       Сохранить изменения
                     </Button>

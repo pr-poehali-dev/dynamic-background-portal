@@ -131,6 +131,7 @@ const Servers = () => {
                   <div className="flex gap-2">
                     <Button
                       size="sm"
+                      onClick={() => window.open(`https://${server.url}`, '_blank')}
                       className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron"
                     >
                       <Icon name="ExternalLink" size={16} className="mr-2" />
@@ -138,6 +139,7 @@ const Servers = () => {
                     </Button>
                     <Button
                       size="sm"
+                      onClick={() => alert('Настройки сервера: ' + server.name)}
                       variant="outline"
                       className="border-neon-purple/50 text-neon-purple hover:bg-neon-purple/10"
                     >
@@ -145,6 +147,7 @@ const Servers = () => {
                     </Button>
                     <Button
                       size="sm"
+                      onClick={() => alert('Статистика сервера: ' + server.name)}
                       variant="outline"
                       className="border-neon-pink/50 text-neon-pink hover:bg-neon-pink/10"
                     >
@@ -166,7 +169,10 @@ const Servers = () => {
             <p className="text-foreground/60 mb-6">
               Выберите конфигурацию и запустите свой DevBlog портал
             </p>
-            <Button className="bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron font-semibold glow-cyan">
+            <Button 
+              onClick={() => window.location.href = '/catalog'}
+              className="bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron font-semibold glow-cyan"
+            >
               <Icon name="ShoppingBag" size={18} className="mr-2" />
               Перейти в каталог
             </Button>

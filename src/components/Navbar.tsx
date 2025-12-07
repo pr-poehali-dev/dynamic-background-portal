@@ -61,10 +61,10 @@ export const Navbar = () => {
             <div className="flex items-center gap-4">
               {user ? (
                 <>
-                  <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-neon-purple/10 border border-neon-purple/30 rounded-lg">
+                  <Link to="/balance" className="hidden md:flex items-center gap-2 px-4 py-2 bg-neon-purple/10 border border-neon-purple/30 rounded-lg hover:bg-neon-purple/20 transition-colors cursor-pointer">
                     <Icon name="Wallet" size={18} className="text-neon-purple" />
                     <span className="font-orbitron font-semibold text-neon-purple">{user.balance}₽</span>
-                  </div>
+                  </Link>
                   <Link to="/profile">
                     <Avatar className="w-10 h-10 border-2 border-neon-cyan glow-cyan cursor-pointer">
                       <AvatarImage src={user.avatar} />

@@ -248,19 +248,9 @@ const Catalog = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    {devblog.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <div className={`w-5 h-5 ${colors.bg} rounded flex items-center justify-center flex-shrink-0`}>
-                          <Icon name="Check" size={14} className={colors.text} />
-                        </div>
-                        <span className="text-foreground/80">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
                   <Button
                     onClick={() => setSelectedPlan(devblog.id)}
-                    className={`w-full mt-6 bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-background font-orbitron font-bold ${colors.glow}`}
+                    className={`w-full bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-background font-orbitron font-bold ${colors.glow}`}
                   >
                     Читать подробнее
                   </Button>

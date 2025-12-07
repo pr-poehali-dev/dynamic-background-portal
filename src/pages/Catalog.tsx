@@ -246,9 +246,6 @@ const Catalog = () => {
                   <CardTitle className={`text-3xl font-orbitron font-bold ${colors.text}`}>
                     {devblog.name}
                   </CardTitle>
-                  <CardDescription className="text-lg font-orbitron text-foreground/70 mt-4">
-                    {devblog.date}
-                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">

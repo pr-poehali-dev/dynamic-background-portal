@@ -11,36 +11,36 @@ const Servers = () => {
   const [servers] = useState([
     {
       id: '1',
-      name: 'Minecraft Survival',
-      game: 'Minecraft',
+      name: 'DevBlog Central',
+      game: 'Информационный портал',
       status: 'online',
-      players: 24,
-      maxPlayers: 30,
-      cpu: 45,
-      ram: 62,
-      ip: '185.248.140.12:25565'
+      views: 15420,
+      maxViews: 20000,
+      cpu: 35,
+      ram: 48,
+      url: 'devblog-central.rusthost.dev'
     },
     {
       id: '2',
-      name: 'CS:GO Competitive',
-      game: 'Counter-Strike',
+      name: 'Update News Hub',
+      game: 'Новостной раздел',
       status: 'online',
-      players: 10,
-      maxPlayers: 10,
-      cpu: 78,
-      ram: 85,
-      ip: '185.248.140.13:27015'
+      views: 8750,
+      maxViews: 10000,
+      cpu: 52,
+      ram: 61,
+      url: 'updates.rusthost.dev'
     },
     {
       id: '3',
-      name: 'Rust Server',
-      game: 'Rust',
-      status: 'offline',
-      players: 0,
-      maxPlayers: 50,
-      cpu: 0,
-      ram: 0,
-      ip: '185.248.140.14:28015'
+      name: 'Community Portal',
+      game: 'Сообщество',
+      status: 'online',
+      views: 12300,
+      maxViews: 15000,
+      cpu: 44,
+      ram: 55,
+      url: 'community.rusthost.dev'
     }
   ]);
 
@@ -61,10 +61,10 @@ const Servers = () => {
         <div className="mb-12 animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-orbitron font-black mb-4">
             <span className="text-neon-cyan">Мои</span>
-            <span className="text-neon-purple"> серверы</span>
+            <span className="text-neon-purple"> DevBlog'и</span>
           </h1>
           <p className="text-xl text-foreground/80">
-            Управление и мониторинг ваших игровых серверов
+            Управление и мониторинг ваших DevBlog порталов
           </p>
         </div>
 
@@ -93,12 +93,12 @@ const Servers = () => {
                 <div className="space-y-3">
                   <div>
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm text-foreground/80">Игроки</span>
+                      <span className="text-sm text-foreground/80">Просмотры</span>
                       <span className="text-sm font-semibold text-neon-purple">
-                        {server.players}/{server.maxPlayers}
+                        {server.views.toLocaleString()}/{server.maxViews.toLocaleString()}
                       </span>
                     </div>
-                    <Progress value={(server.players / server.maxPlayers) * 100} className="h-2" />
+                    <Progress value={(server.views / server.maxViews) * 100} className="h-2" />
                   </div>
 
                   <div>
@@ -125,7 +125,7 @@ const Servers = () => {
                 <div className="pt-4 border-t border-border">
                   <div className="flex items-center gap-2 text-sm text-foreground/60 mb-4">
                     <Icon name="Globe" size={16} />
-                    <code className="text-neon-cyan">{server.ip}</code>
+                    <code className="text-neon-cyan">{server.url}</code>
                   </div>
                   
                   <div className="flex gap-2">
@@ -133,8 +133,8 @@ const Servers = () => {
                       size="sm"
                       className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron"
                     >
-                      <Icon name={server.status === 'online' ? 'Square' : 'Play'} size={16} className="mr-2" />
-                      {server.status === 'online' ? 'Остановить' : 'Запустить'}
+                      <Icon name="ExternalLink" size={16} className="mr-2" />
+                      Открыть
                     </Button>
                     <Button
                       size="sm"
@@ -148,7 +148,7 @@ const Servers = () => {
                       variant="outline"
                       className="border-neon-pink/50 text-neon-pink hover:bg-neon-pink/10"
                     >
-                      <Icon name="Terminal" size={16} />
+                      <Icon name="BarChart" size={16} />
                     </Button>
                   </div>
                 </div>
@@ -161,10 +161,10 @@ const Servers = () => {
           <CardContent className="p-8 text-center">
             <Icon name="Plus" size={48} className="text-neon-cyan mx-auto mb-4" />
             <h3 className="text-2xl font-orbitron font-bold text-neon-cyan mb-2">
-              Создать новый сервер
+              Создать новый DevBlog
             </h3>
             <p className="text-foreground/60 mb-6">
-              Выберите тариф и начните играть за несколько минут
+              Выберите конфигурацию и запустите свой DevBlog портал
             </p>
             <Button className="bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron font-semibold glow-cyan">
               <Icon name="ShoppingBag" size={18} className="mr-2" />

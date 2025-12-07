@@ -9,55 +9,55 @@ import Icon from '@/components/ui/icon';
 const Catalog = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
-  const plans = [
+  const devblogs = [
     {
-      id: 'starter',
-      name: 'Starter',
-      price: 399,
+      id: 'devblog-1',
+      name: 'DevBlog 245',
+      date: 'Декабрь 2024',
       color: 'cyan',
-      icon: 'Rocket',
+      icon: 'FileText',
       features: [
-        '2 GB RAM',
-        '20 GB SSD',
-        '2 ядра CPU',
-        'До 10 игроков',
-        'Базовая защита',
-        'Поддержка 24/7'
+        'Новая система крафта',
+        'Улучшения боевой системы',
+        'Оптимизация производительности',
+        'Новые строительные блоки',
+        'Изменения баланса оружия',
+        'Фиксы багов'
       ],
       popular: false
     },
     {
-      id: 'pro',
-      name: 'Pro',
-      price: 799,
+      id: 'devblog-2',
+      name: 'DevBlog 244',
+      date: 'Ноябрь 2024',
       color: 'purple',
       icon: 'Zap',
       features: [
-        '4 GB RAM',
-        '40 GB NVMe',
-        '4 ядра CPU',
-        'До 30 игроков',
-        'DDoS защита Pro',
-        'Приоритетная поддержка',
-        'Бесплатный бэкап'
+        'Система транспорта',
+        'Новые противники NPC',
+        'Улучшенная погода',
+        'Новое электричество',
+        'Система достижений',
+        'Улучшенный UI',
+        'Новые эвенты'
       ],
       popular: true
     },
     {
-      id: 'ultimate',
-      name: 'Ultimate',
-      price: 1499,
+      id: 'devblog-3',
+      name: 'DevBlog 243',
+      date: 'Октябрь 2024',
       color: 'pink',
       icon: 'Crown',
       features: [
-        '8 GB RAM',
-        '80 GB NVMe',
-        '8 ядер CPU',
-        'Без ограничений',
-        'DDoS защита Ultimate',
-        'Персональный менеджер',
-        'Автобэкапы каждый час',
-        'Dedicated IP'
+        'Система кланов',
+        'Рейдовые механики',
+        'Новые биомы',
+        'Система торговли',
+        'Улучшения PvP',
+        'Новые постройки',
+        'Система репутации',
+        'Командные бонусы'
       ],
       popular: false
     }
@@ -98,45 +98,44 @@ const Catalog = () => {
       <div className="container mx-auto px-4 pt-32 pb-20">
         <div className="text-center mb-16 animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-orbitron font-black mb-4">
-            <span className="text-neon-cyan">Выбери</span>
-            <span className="text-neon-purple"> свой тариф</span>
+            <span className="text-neon-cyan">Каталог</span>
+            <span className="text-neon-purple"> DevBlog'ов</span>
           </h1>
           <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
-            Подберите идеальную конфигурацию для вашего сервера
+            Все обновления и изменения Rust серверов
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {plans.map((plan, index) => {
-            const colors = getColorClasses(plan.color);
+          {devblogs.map((devblog, index) => {
+            const colors = getColorClasses(devblog.color);
             return (
               <Card
-                key={plan.id}
+                key={devblog.id}
                 className={`relative bg-card/50 backdrop-blur-sm border ${colors.border} transition-all hover:scale-105 animate-fade-in ${
-                  plan.popular ? 'md:scale-110 border-2' : ''
+                  devblog.popular ? 'md:scale-110 border-2' : ''
                 }`}
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
-                {plan.popular && (
+                {devblog.popular && (
                   <Badge className={`absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r ${colors.gradient} text-background font-orbitron font-bold px-4 py-1 ${colors.glow}`}>
                     Популярный
                   </Badge>
                 )}
                 <CardHeader className="text-center pb-8">
                   <div className={`w-16 h-16 ${colors.bg} rounded-lg flex items-center justify-center mx-auto mb-4 ${colors.glow}`}>
-                    <Icon name={plan.icon as any} size={32} className={colors.text} />
+                    <Icon name={devblog.icon as any} size={32} className={colors.text} />
                   </div>
                   <CardTitle className={`text-3xl font-orbitron font-bold ${colors.text}`}>
-                    {plan.name}
+                    {devblog.name}
                   </CardTitle>
-                  <CardDescription className="text-4xl font-orbitron font-black text-foreground mt-4">
-                    {plan.price}₽
-                    <span className="text-sm text-foreground/60 font-inter font-normal">/мес</span>
+                  <CardDescription className="text-lg font-orbitron text-foreground/70 mt-4">
+                    {devblog.date}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    {plan.features.map((feature, i) => (
+                    {devblog.features.map((feature, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className={`w-5 h-5 ${colors.bg} rounded flex items-center justify-center flex-shrink-0`}>
                           <Icon name="Check" size={14} className={colors.text} />
@@ -146,10 +145,10 @@ const Catalog = () => {
                     ))}
                   </div>
                   <Button
-                    onClick={() => setSelectedPlan(plan.id)}
+                    onClick={() => setSelectedPlan(devblog.id)}
                     className={`w-full mt-6 bg-gradient-to-r ${colors.gradient} hover:opacity-90 text-background font-orbitron font-bold ${colors.glow}`}
                   >
-                    Выбрать тариф
+                    Читать подробнее
                   </Button>
                 </CardContent>
               </Card>

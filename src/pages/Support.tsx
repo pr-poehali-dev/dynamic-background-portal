@@ -36,12 +36,23 @@ const Support = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  const getBotResponse = (question: string): string => {
+    const responses: { [key: string]: string } = {
+      'Как создать сервер?': 'Для создания сервера:\n1. Перейдите в раздел "Каталог"\n2. Выберите DevBlog\n3. Нажмите "Читать подробнее"\n4. Выберите тариф (Неделя или Месяц)\n5. Подтвердите создание\n\nСервер будет готов через 30 секунд!',
+      'Способы оплаты': 'Мы принимаем:\n• Банковские карты (без комиссии)\n• QIWI Кошелек (комиссия 2%)\n• ЮMoney (без комиссии)\n• Криптовалюта (комиссия 1%)\n\nБонусы: от 5000₽ +5%, от 10000₽ +10%',
+      'Безопасность данных': 'Ваши данные защищены:\n• SSL шифрование\n• DDoS защита L3-L7\n• Резервное копирование каждый день\n• PCI DSS сертификация\n• Двухфакторная аутентификация\n\nМы никогда не передаем данные третьим лицам.',
+      'Настройка сервера': 'Управление сервером:\n• Панель управления в разделе "Серверы"\n• Мониторинг CPU, RAM, Views\n• Настройки производительности\n• Автоматические бэкапы\n• Доступ к консоли\n\nПодробнее в разделе "Документация"'
+    };
+    return responses[question] || 'Спасибо за обращение! Специалист скоро ответит на ваш вопрос.';
+  };
+
+  const handleSendMessage = (customMessage?: string) => {
+    const messageText = customMessage || inputMessage;
+    if (!messageText.trim()) return;
 
     const newMessage: Message = {
       id: Date.now().toString(),
-      text: inputMessage,
+      text: messageText,
       sender: 'user',
       time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
       status: 'sent'
@@ -53,7 +64,7 @@ const Support = () => {
     setTimeout(() => {
       const supportResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Спасибо за обращение! Специалист скоро ответит на ваш вопрос.',
+        text: getBotResponse(messageText),
         sender: 'support',
         time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
         status: 'read'
@@ -183,7 +194,7 @@ const Support = () => {
                   return (
                     <button
                       key={index}
-                      onClick={() => setInputMessage(question.text)}
+                      onClick={() => handleSendMessage(question.text)}
                       className={`w-full p-4 ${colors.bg} border ${colors.border} rounded-lg hover:scale-105 transition-all text-left group`}
                     >
                       <div className="flex items-center gap-3">
@@ -196,39 +207,7 @@ const Support = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/50 backdrop-blur-sm border-neon-pink/30 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <CardHeader>
-                <CardTitle className="text-xl font-orbitron text-neon-pink flex items-center gap-2">
-                  <Icon name="Clock" size={24} />
-                  Контакты
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <Icon name="Mail" size={20} className="text-neon-cyan mt-1" />
-                  <div>
-                    <p className="text-sm text-foreground/60">Email</p>
-                    <p className="text-foreground">support@cyberhost.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="Phone" size={20} className="text-neon-purple mt-1" />
-                  <div>
-                    <p className="text-sm text-foreground/60">Телефон</p>
-                    <p className="text-foreground">+7 (800) 555-35-35</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="Clock" size={20} className="text-neon-pink mt-1" />
-                  <div>
-                    <p className="text-sm text-foreground/60">Время работы</p>
-                    <p className="text-foreground">24/7 без выходных</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 backdrop-blur-sm border-neon-cyan/30 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+            <Card className="bg-card/50 backdrop-blur-sm border-neon-cyan/30 animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <CardHeader>
                 <CardTitle className="text-xl font-orbitron text-neon-cyan flex items-center gap-2">
                   <Icon name="FileText" size={24} />

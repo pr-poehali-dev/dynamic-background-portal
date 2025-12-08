@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -12,23 +12,36 @@ export const Navbar = () => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [user, setUser] = useState<{ name: string; balance: number; avatar: string; hasHosting: boolean } | null>(null);
+  const [hasHosting, setHasHosting] = useState(false);
+
+  useEffect(() => {
+    const hosting = localStorage.getItem('hasHosting');
+    if (hosting === 'true') {
+      setHasHosting(true);
+      if (user) {
+        setUser({ ...user, hasHosting: true });
+      }
+    }
+  }, []);
 
   const navItems = [
     { name: 'Главная', path: '/', icon: 'Home' },
     { name: 'Каталог', path: '/catalog', icon: 'ShoppingBag' },
-    ...(user?.hasHosting ? [{ name: 'Серверы', path: '/servers', icon: 'Server' }] : []),
+    ...(hasHosting ? [{ name: 'Серверы', path: '/servers', icon: 'Server' }] : []),
     { name: 'Документация', path: '/docs', icon: 'Book' },
     { name: 'Поддержка', path: '/support', icon: 'MessageCircle' }
   ];
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
+    const hosting = localStorage.getItem('hasHosting') === 'true';
     setUser({
       name: 'Player',
       balance: 1250,
       avatar: '',
-      hasHosting: false
+      hasHosting: hosting
     });
+    setHasHosting(hosting);
     setIsAuthOpen(false);
   };
 

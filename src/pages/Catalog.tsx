@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import Navbar from '@/components/Navbar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,12 +8,17 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 const Catalog = () => {
+  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [billingPeriods, setBillingPeriods] = useState<{ [key: string]: 'week' | 'month' }>({});
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [selectedDevblog, setSelectedDevblog] = useState<any>(null);
+  const [isPurchaseOpen, setIsPurchaseOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('card');
 
   const handleBillingChange = (devblogId: string, period: 'week' | 'month') => {
     setBillingPeriods(prev => ({ ...prev, [devblogId]: period }));
@@ -41,7 +47,10 @@ const Catalog = () => {
         'Оптимизация производительности',
         'Новые строительные блоки'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-245-core.zip',
+      clientDownload: 'rust-devblog-245-client.exe',
+      serverPort: 28015
     },
     {
       id: 'devblog-244',
@@ -58,7 +67,10 @@ const Catalog = () => {
         'Улучшенная погода',
         'Новое электричество'
       ],
-      popular: true
+      popular: true,
+      serverCore: 'rust-devblog-244-core.zip',
+      clientDownload: 'rust-devblog-244-client.exe',
+      serverPort: 28016
     },
     {
       id: 'devblog-243',
@@ -75,7 +87,10 @@ const Catalog = () => {
         'Новые биомы',
         'Система торговли'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-243-core.zip',
+      clientDownload: 'rust-devblog-243-client.exe',
+      serverPort: 28017
     },
     {
       id: 'devblog-242',
@@ -92,7 +107,10 @@ const Catalog = () => {
         'Система турелей',
         'Укрепления стен'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-242-core.zip',
+      clientDownload: 'rust-devblog-242-client.exe',
+      serverPort: 28018
     },
     {
       id: 'devblog-241',
@@ -109,7 +127,10 @@ const Catalog = () => {
         'Улучшение крафта',
         'Ремонт предметов'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-241-core.zip',
+      clientDownload: 'rust-devblog-241-client.exe',
+      serverPort: 28019
     },
     {
       id: 'devblog-240',
@@ -126,7 +147,10 @@ const Catalog = () => {
         'Командные задания',
         'Общий инвентарь'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-240-core.zip',
+      clientDownload: 'rust-devblog-240-client.exe',
+      serverPort: 28020
     },
     {
       id: 'devblog-239',
@@ -143,7 +167,10 @@ const Catalog = () => {
         'Баланс урона',
         'Взрывчатка'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-239-core.zip',
+      clientDownload: 'rust-devblog-239-client.exe',
+      serverPort: 28021
     },
     {
       id: 'devblog-238',
@@ -160,7 +187,10 @@ const Catalog = () => {
         'Точки интереса',
         'Система навигации'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-238-core.zip',
+      clientDownload: 'rust-devblog-238-client.exe',
+      serverPort: 28022
     },
     {
       id: 'devblog-237',
@@ -177,7 +207,10 @@ const Catalog = () => {
         'Автосортировка',
         'Защита лута'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-237-core.zip',
+      clientDownload: 'rust-devblog-237-client.exe',
+      serverPort: 28023
     },
     {
       id: 'devblog-236',
@@ -194,7 +227,10 @@ const Catalog = () => {
         'Карьеры',
         'Система переработки'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-236-core.zip',
+      clientDownload: 'rust-devblog-236-client.exe',
+      serverPort: 28024
     },
     {
       id: 'devblog-235',
@@ -211,7 +247,10 @@ const Catalog = () => {
         'Мебель',
         'Персонализация'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-235-core.zip',
+      clientDownload: 'rust-devblog-235-client.exe',
+      serverPort: 28025
     },
     {
       id: 'devblog-234',
@@ -228,7 +267,10 @@ const Catalog = () => {
         'Возрождение',
         'Призраки'
       ],
-      popular: false
+      popular: false,
+      serverCore: 'rust-devblog-234-core.zip',
+      clientDownload: 'rust-devblog-234-client.exe',
+      serverPort: 28026
     }
   ];
 
@@ -387,6 +429,7 @@ const Catalog = () => {
                     onClick={() => {
                       setSelectedPlan(selectedDevblog.id);
                       setIsDetailsOpen(false);
+                      setIsPurchaseOpen(true);
                     }}
                     className={`w-full bg-gradient-to-r ${getColorClasses(selectedDevblog.color).gradient} hover:opacity-90 text-background font-orbitron font-bold text-lg py-6 ${getColorClasses(selectedDevblog.color).glow}`}
                   >
@@ -398,8 +441,141 @@ const Catalog = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      <Dialog open={isPurchaseOpen} onOpenChange={setIsPurchaseOpen}>
+        <DialogContent className="bg-card border-primary/30 max-w-md">
+          {selectedDevblog && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-orbitron text-center">
+                  Оплата хостинга
+                </DialogTitle>
+                <DialogDescription className="text-center">
+                  {selectedDevblog.name} • {getBillingPeriod(selectedDevblog.id) === 'week' ? 'Неделя' : 'Месяц'}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-6 mt-6">
+                <div className="text-center p-4 bg-muted/30 rounded-lg">
+                  <div className="text-3xl font-orbitron font-bold text-neon-cyan">
+                    {getBillingPeriod(selectedDevblog.id) === 'week' ? selectedDevblog.pricePerWeek : selectedDevblog.pricePerMonth}₽
+                  </div>
+                  <div className="text-sm text-foreground/60 mt-1">
+                    {selectedDevblog.pricePerHour}₽/час
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="text-base font-orbitron mb-4 block">Выберите способ оплаты:</Label>
+                  <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod}>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-all cursor-pointer border border-transparent hover:border-neon-cyan/30">
+                        <RadioGroupItem value="card" id="card" />
+                        <Label htmlFor="card" className="flex items-center gap-3 cursor-pointer flex-1">
+                          <Icon name="CreditCard" size={20} className="text-neon-cyan" />
+                          <div>
+                            <div className="font-medium">Банковская карта</div>
+                            <div className="text-sm text-foreground/60">Без комиссии • Мгновенно</div>
+                          </div>
+                        </Label>
+                      </div>
+
+                      <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-all cursor-pointer border border-transparent hover:border-neon-purple/30">
+                        <RadioGroupItem value="qiwi" id="qiwi" />
+                        <Label htmlFor="qiwi" className="flex items-center gap-3 cursor-pointer flex-1">
+                          <Icon name="Wallet" size={20} className="text-neon-purple" />
+                          <div>
+                            <div className="font-medium">QIWI Кошелёк</div>
+                            <div className="text-sm text-foreground/60">Комиссия 2% • Быстро</div>
+                          </div>
+                        </Label>
+                      </div>
+
+                      <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-all cursor-pointer border border-transparent hover:border-neon-pink/30">
+                        <RadioGroupItem value="yoomoney" id="yoomoney" />
+                        <Label htmlFor="yoomoney" className="flex items-center gap-3 cursor-pointer flex-1">
+                          <Icon name="Banknote" size={20} className="text-neon-pink" />
+                          <div>
+                            <div className="font-medium">ЮMoney</div>
+                            <div className="text-sm text-foreground/60">Без комиссии • Надёжно</div>
+                          </div>
+                        </Label>
+                      </div>
+
+                      <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-all cursor-pointer border border-transparent hover:border-neon-cyan/30">
+                        <RadioGroupItem value="crypto" id="crypto" />
+                        <Label htmlFor="crypto" className="flex items-center gap-3 cursor-pointer flex-1">
+                          <Icon name="Bitcoin" size={20} className="text-neon-cyan" />
+                          <div>
+                            <div className="font-medium">Криптовалюта</div>
+                            <div className="text-sm text-foreground/60">Комиссия 1% • Анонимно</div>
+                          </div>
+                        </Label>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <Button
+                  onClick={() => {
+                    const period = getBillingPeriod(selectedDevblog.id);
+                    const price = period === 'week' ? selectedDevblog.pricePerWeek : selectedDevblog.pricePerMonth;
+                    const commission = selectedPaymentMethod === 'qiwi' ? price * 0.02 : selectedPaymentMethod === 'crypto' ? price * 0.01 : 0;
+                    const total = price + commission;
+                    
+                    const transaction = {
+                      id: `TXN-${Date.now()}`,
+                      type: 'purchase',
+                      devblog: selectedDevblog.name,
+                      period: period === 'week' ? 'Неделя' : 'Месяц',
+                      amount: total,
+                      paymentMethod: selectedPaymentMethod,
+                      timestamp: new Date().toISOString(),
+                      status: 'success'
+                    };
+                    
+                    localStorage.setItem('lastTransaction', JSON.stringify(transaction));
+                    localStorage.setItem('hasHosting', 'true');
+                    localStorage.setItem('activeServer', JSON.stringify({
+                      devblog: selectedDevblog.name,
+                      core: selectedDevblog.serverCore,
+                      client: selectedDevblog.clientDownload,
+                      port: selectedDevblog.serverPort,
+                      purchaseDate: new Date().toISOString()
+                    }));
+                    
+                    setIsPurchaseOpen(false);
+                    alert(`✅ Оплата успешна!\n\nСервер ${selectedDevblog.name} активирован!\n\nСумма: ${total}₽\nСпособ оплаты: ${getPaymentMethodName(selectedPaymentMethod)}\n\nТеперь вы можете:\n• Зайти в раздел "Серверы"\n• Скачать клиент для подключения\n• Управлять сервером`);
+                    navigate('/servers');
+                  }}
+                  className="w-full bg-gradient-to-r from-neon-cyan to-neon-purple hover:opacity-90 text-background font-orbitron font-bold text-lg py-6 glow-cyan"
+                >
+                  <Icon name="Lock" size={20} className="mr-2" />
+                  Оплатить {getBillingPeriod(selectedDevblog.id) === 'week' ? selectedDevblog.pricePerWeek : selectedDevblog.pricePerMonth}₽
+                  {selectedPaymentMethod === 'qiwi' && ` + ${Math.round((getBillingPeriod(selectedDevblog.id) === 'week' ? selectedDevblog.pricePerWeek : selectedDevblog.pricePerMonth) * 0.02)}₽`}
+                  {selectedPaymentMethod === 'crypto' && ` + ${Math.round((getBillingPeriod(selectedDevblog.id) === 'week' ? selectedDevblog.pricePerWeek : selectedDevblog.pricePerMonth) * 0.01)}₽`}
+                </Button>
+
+                <p className="text-xs text-center text-foreground/50">
+                  Нажимая "Оплатить", вы соглашаетесь с условиями использования
+                </p>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
+};
+
+const getPaymentMethodName = (method: string): string => {
+  const methods: { [key: string]: string } = {
+    'card': 'Банковская карта',
+    'qiwi': 'QIWI Кошелёк',
+    'yoomoney': 'ЮMoney',
+    'crypto': 'Криптовалюта'
+  };
+  return methods[method] || method;
 };
 
 export default Catalog;

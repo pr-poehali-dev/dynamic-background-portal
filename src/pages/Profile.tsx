@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import Navbar from '@/components/Navbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,17 +9,57 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 
+interface Transaction {
+  id: string;
+  type: string;
+  amount: number;
+  description: string;
+  date: string;
+  paymentMethod?: string;
+  devblog?: string;
+  period?: string;
+}
+
 const Profile = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([
+    { id: '1', type: 'payment', amount: 799, description: 'Оплата Pro тарифа', date: '2024-12-01' },
+    { id: '2', type: 'deposit', amount: 2000, description: 'Пополнение баланса', date: '2024-11-28' },
+    { id: '3', type: 'payment', amount: 399, description: 'Оплата Starter тарифа', date: '2024-11-15' }
+  ]);
+
+  useEffect(() => {
+    const lastTransaction = localStorage.getItem('lastTransaction');
+    if (lastTransaction) {
+      const tx = JSON.parse(lastTransaction);
+      const formattedDate = new Date(tx.timestamp).toLocaleDateString('ru-RU');
+      const paymentMethods: { [key: string]: string } = {
+        'card': 'Банковская карта',
+        'qiwi': 'QIWI Кошелёк',
+        'yoomoney': 'ЮMoney',
+        'crypto': 'Криптовалюта'
+      };
+      
+      setTransactions(prev => [
+        {
+          id: tx.id,
+          type: 'purchase',
+          amount: tx.amount,
+          description: `Покупка хостинга ${tx.devblog} (${tx.period})`,
+          date: formattedDate,
+          paymentMethod: paymentMethods[tx.paymentMethod],
+          devblog: tx.devblog,
+          period: tx.period
+        },
+        ...prev
+      ]);
+    }
+  }, []);
+
   const user = {
     name: 'CyberPlayer',
     email: 'player@cyberhost.com',
     balance: 1250,
-    avatar: '',
-    transactions: [
-      { id: '1', type: 'payment', amount: 799, description: 'Оплата Pro тарифа', date: '2024-12-01' },
-      { id: '2', type: 'deposit', amount: 2000, description: 'Пополнение баланса', date: '2024-11-28' },
-      { id: '3', type: 'payment', amount: 399, description: 'Оплата Starter тарифа', date: '2024-11-15' }
-    ]
+    avatar: ''
   };
 
   return (
@@ -100,7 +141,7 @@ const Profile = () => {
 
                 <TabsContent value="history" className="space-y-4">
                   <div className="space-y-3">
-                    {user.transactions.map((transaction, index) => (
+                    {transactions.map((transaction, index) => (
                       <div
                         key={transaction.id}
                         className="p-4 bg-muted/50 border border-primary/20 rounded-lg hover:border-primary/40 transition-all"
@@ -108,21 +149,24 @@ const Profile = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                              transaction.type === 'deposit' ? 'bg-green-500/10' : 'bg-red-500/10'
+                              transaction.type === 'deposit' ? 'bg-green-500/10' : transaction.type === 'purchase' ? 'bg-blue-500/10' : 'bg-red-500/10'
                             }`}>
                               <Icon
-                                name={transaction.type === 'deposit' ? 'ArrowDownToLine' : 'ArrowUpFromLine'}
+                                name={transaction.type === 'deposit' ? 'ArrowDownToLine' : transaction.type === 'purchase' ? 'ShoppingCart' : 'ArrowUpFromLine'}
                                 size={20}
-                                className={transaction.type === 'deposit' ? 'text-green-400' : 'text-red-400'}
+                                className={transaction.type === 'deposit' ? 'text-green-400' : transaction.type === 'purchase' ? 'text-blue-400' : 'text-red-400'}
                               />
                             </div>
                             <div>
                               <p className="font-semibold text-foreground">{transaction.description}</p>
-                              <p className="text-sm text-foreground/60">{transaction.date}</p>
+                              <p className="text-sm text-foreground/60">
+                                {transaction.date}
+                                {transaction.paymentMethod && ` • ${transaction.paymentMethod}`}
+                              </p>
                             </div>
                           </div>
                           <div className={`text-xl font-orbitron font-bold ${
-                            transaction.type === 'deposit' ? 'text-green-400' : 'text-red-400'
+                            transaction.type === 'deposit' ? 'text-green-400' : transaction.type === 'purchase' ? 'text-blue-400' : 'text-red-400'
                           }`}>
                             {transaction.type === 'deposit' ? '+' : '-'}{transaction.amount}₽
                           </div>

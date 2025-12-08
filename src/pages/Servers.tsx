@@ -8,31 +8,7 @@ import ServerConsoleDialog from '@/components/server/ServerConsoleDialog';
 import ServerSettingsDialog from '@/components/server/ServerSettingsDialog';
 import ServerStatsDialog from '@/components/server/ServerStatsDialog';
 import ServerDashboard from '@/components/server/ServerDashboard';
-
-interface ActiveServer {
-  devblog: string;
-  core: string;
-  client: string;
-  port: number;
-  purchaseDate: string;
-  settings?: ServerSettings;
-}
-
-interface ServerSettings {
-  hostname: string;
-  maxPlayers: number;
-  mapUrl?: string;
-  mapSeed?: string;
-  worldSize: number;
-  description: string;
-  plugins: string[];
-}
-
-interface ConsoleLog {
-  timestamp: string;
-  type: 'info' | 'warning' | 'error' | 'success';
-  message: string;
-}
+import type { ActiveServer, ServerSettings, ConsoleLog } from '@/types/server';
 
 const Servers = () => {
   const [activeServer, setActiveServer] = useState<ActiveServer | null>(null);
@@ -65,7 +41,9 @@ const Servers = () => {
     mapSeed: '1234',
     worldSize: 4000,
     description: 'Powered by CYBER HOST',
-    plugins: []
+    plugins: [],
+    tags: [],
+    links: []
   });
 
   const [newPlugin, setNewPlugin] = useState('');
@@ -76,7 +54,11 @@ const Servers = () => {
       const serverData = JSON.parse(server);
       setActiveServer(serverData);
       if (serverData.settings) {
-        setServerSettings(serverData.settings);
+        setServerSettings({
+          ...serverData.settings,
+          tags: serverData.settings.tags || [],
+          links: serverData.settings.links || []
+        });
         setServerStats(prev => ({ ...prev, maxPlayers: serverData.settings.maxPlayers }));
       }
     }
@@ -131,9 +113,13 @@ connect 127.0.0.1:${activeServer.port}
     addConsoleLog('info', `> ${consoleInput}`);
     
     const command = consoleInput.toLowerCase().trim();
+    const args = command.split(' ');
+    const baseCommand = args[0];
+    const subCommand = args[1];
+    const pluginName = args[2];
     
     if (command === 'help') {
-      addConsoleLog('info', 'Доступные команды: status, players, restart, stop, clear');
+      addConsoleLog('info', 'Доступные команды: status, players, restart, stop, clear, plugin.load, plugin.reload, plugin.unload, plugin.list');
     } else if (command === 'status') {
       addConsoleLog('success', `Сервер: Online | Игроки: ${serverStats.players}/${serverStats.maxPlayers} | CPU: ${serverStats.cpu}% | RAM: ${serverStats.ram}%`);
     } else if (command === 'players') {
@@ -145,6 +131,27 @@ connect 127.0.0.1:${activeServer.port}
       addConsoleLog('warning', 'Остановка сервера...');
     } else if (command === 'clear') {
       setConsoleLogs([]);
+    } else if (baseCommand === 'plugin.load' && pluginName) {
+      addConsoleLog('info', `Загрузка плагина ${pluginName}...`);
+      setTimeout(() => {
+        addConsoleLog('success', `Плагин ${pluginName} загружен`);
+        addConsoleLog('info', 'Подключено к базе данных');
+      }, 500);
+    } else if (baseCommand === 'plugin.reload' && pluginName) {
+      addConsoleLog('warning', `Перезагрузка плагина ${pluginName}...`);
+      setTimeout(() => {
+        addConsoleLog('success', `Плагин ${pluginName} успешно перезагружен`);
+      }, 500);
+    } else if (baseCommand === 'plugin.unload' && pluginName) {
+      addConsoleLog('warning', `Выгрузка плагина ${pluginName}...`);
+      setTimeout(() => {
+        addConsoleLog('info', `Плагин ${pluginName} выгружен`);
+      }, 500);
+    } else if (command === 'plugin.list') {
+      addConsoleLog('info', `Установленные плагины (${serverSettings.plugins.length}):`);
+      serverSettings.plugins.forEach(plugin => {
+        addConsoleLog('info', `• ${plugin}`);
+      });
     } else {
       addConsoleLog('error', `Неизвестная команда: ${consoleInput}. Введите 'help' для списка команд`);
     }
@@ -168,6 +175,9 @@ connect 127.0.0.1:${activeServer.port}
     addConsoleLog('info', `Название: ${serverSettings.hostname}`);
     addConsoleLog('info', `Максимум игроков: ${serverSettings.maxPlayers}`);
     addConsoleLog('info', `Размер карты: ${serverSettings.worldSize}`);
+    if (serverSettings.tags.length > 0) {
+      addConsoleLog('info', `Теги: ${serverSettings.tags.join(', ')}`);
+    }
     
     setIsSettingsOpen(false);
     alert('✅ Настройки сохранены!\n\nИзменения вступят в силу после перезапуска сервера.');
@@ -191,6 +201,9 @@ connect 127.0.0.1:${activeServer.port}
 
     setTimeout(() => {
       addConsoleLog('success', 'Сервер успешно перезапущен!');
+      if (serverSettings.tags.length > 0) {
+        addConsoleLog('info', `Теги сервера: ${serverSettings.tags.join(', ')}`);
+      }
       addConsoleLog('info', `Порт ${activeServer?.port} открыт`);
       addConsoleLog('success', 'Сервер готов к подключению игроков');
       setIsRestarting(false);
@@ -222,6 +235,40 @@ connect 127.0.0.1:${activeServer.port}
     const seed = Math.floor(Math.random() * 999999).toString();
     setServerSettings(prev => ({ ...prev, mapSeed: seed, mapUrl: '' }));
     addConsoleLog('info', `Генерация случайной карты с seed: ${seed}`);
+  };
+
+  const handleAddTag = (tag: string) => {
+    setServerSettings(prev => ({
+      ...prev,
+      tags: [...prev.tags, tag]
+    }));
+    addConsoleLog('success', `Тег "${tag}" добавлен`);
+  };
+
+  const handleRemoveTag = (index: number) => {
+    const tagName = serverSettings.tags[index];
+    setServerSettings(prev => ({
+      ...prev,
+      tags: prev.tags.filter((_, i) => i !== index)
+    }));
+    addConsoleLog('info', `Тег "${tagName}" удален`);
+  };
+
+  const handleAddLink = (name: string, url: string) => {
+    setServerSettings(prev => ({
+      ...prev,
+      links: [...prev.links, { name, url, createdAt: new Date().toISOString() }]
+    }));
+    addConsoleLog('success', `Ссылка "${name}" добавлена`);
+  };
+
+  const handleRemoveLink = (index: number) => {
+    const linkName = serverSettings.links[index].name;
+    setServerSettings(prev => ({
+      ...prev,
+      links: prev.links.filter((_, i) => i !== index)
+    }));
+    addConsoleLog('info', `Ссылка "${linkName}" удалена`);
   };
 
   if (!activeServer) {
@@ -284,6 +331,7 @@ connect 127.0.0.1:${activeServer.port}
         <ServerDashboard
           activeServer={activeServer}
           serverStats={serverStats}
+          serverSettings={serverSettings}
           isRestarting={isRestarting}
           onOpenConsole={() => setIsConsoleOpen(true)}
           onOpenSettings={() => setIsSettingsOpen(true)}
@@ -332,6 +380,10 @@ connect 127.0.0.1:${activeServer.port}
         onRemovePlugin={handleRemovePlugin}
         onLoadRandomMap={handleLoadRandomMap}
         onSaveSettings={handleSaveSettings}
+        onAddTag={handleAddTag}
+        onRemoveTag={handleRemoveTag}
+        onAddLink={handleAddLink}
+        onRemoveLink={handleRemoveLink}
       />
 
       <ServerStatsDialog
